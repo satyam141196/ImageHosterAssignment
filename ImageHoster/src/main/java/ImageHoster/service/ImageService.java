@@ -46,4 +46,10 @@ public class ImageService {
         imageRepository.deleteImage(imageId);
     }
 
+    public Integer getUploaderId(Integer imageId){
+        Image uploaderId = imageRepository.getUploaderId(imageId);
+        Integer id = uploaderId.getUser().getId();
+        return id;
+    }
+
 }
