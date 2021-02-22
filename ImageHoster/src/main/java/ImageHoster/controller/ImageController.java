@@ -1,5 +1,6 @@
 package ImageHoster.controller;
 
+import ImageHoster.model.Comment;
 import ImageHoster.model.Image;
 import ImageHoster.model.Tag;
 import ImageHoster.model.User;
@@ -8,10 +9,7 @@ import ImageHoster.service.TagService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpSession;
@@ -50,6 +48,7 @@ public class ImageController {
         Image image = imageService.getImageByTitle(imageId);
         model.addAttribute("image", image);
         model.addAttribute("tags", image.getTags());
+
         return "images/image";
     }
 
@@ -205,4 +204,28 @@ public class ImageController {
 
         return tagString.toString();
     }
+
+    @RequestMapping(value = "/image/{imageId}/{imageTitle}/comments" , method = RequestMethod.POST)
+    public String postComments(@ModelAttribute("comment")Comment comment , @PathVariable(name = "imageId") Integer imageId, HttpSession session, Model model){
+
+        User user = (User) session.getAttribute("loggeduser");
+        Image image1 = imageService.getImage(imageId);
+        comment.setImage(image1);
+        comment.setUser(user);
+        comment.setCreateDate(new Date());
+
+        System.out.println("Comment is: " + comment.getText());
+
+        Comment comments = imageService.uploadComment(comment);
+
+
+
+        model.addAttribute("comments",comments);
+
+        Image image = imageService.getImageByTitle(imageId);
+        model.addAttribute("image", image);
+        model.addAttribute("tags", image.getTags());
+        return "images/image";
+    }
+
 }

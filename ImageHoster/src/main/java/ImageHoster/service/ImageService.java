@@ -1,10 +1,14 @@
 package ImageHoster.service;
 
+import ImageHoster.model.Comment;
 import ImageHoster.model.Image;
+import ImageHoster.model.User;
 import ImageHoster.repository.ImageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -50,6 +54,9 @@ public class ImageService {
         Image uploaderId = imageRepository.getUploaderId(imageId);
         Integer id = uploaderId.getUser().getId();
         return id;
+    }
+    public Comment uploadComment(Comment comment){
+        return imageRepository.uploadComment(comment);
     }
 
 }
