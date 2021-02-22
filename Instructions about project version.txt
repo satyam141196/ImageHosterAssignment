@@ -1,0 +1,2 @@
+1. Project is running on springboot 2.4.1, version can be set to 2.4.1 by using <version>2.4.1</version> in pom.xml file springboot dependency.
+2. Project is made on java14.0
