@@ -48,7 +48,7 @@ public class ImageController {
         Image image = imageService.getImageByTitle(imageId);
         model.addAttribute("image", image);
         model.addAttribute("tags", image.getTags());
-
+        model.addAttribute("comments", image.getComments());
         return "images/image";
     }
 
@@ -203,29 +203,6 @@ public class ImageController {
         tagString.append(lastTag.getName());
 
         return tagString.toString();
-    }
-
-    @RequestMapping(value = "/image/{imageId}/{imageTitle}/comments" , method = RequestMethod.POST)
-    public String postComments(@ModelAttribute("comment")Comment comment , @PathVariable(name = "imageId") Integer imageId, HttpSession session, Model model){
-
-        User user = (User) session.getAttribute("loggeduser");
-        Image image1 = imageService.getImage(imageId);
-        comment.setImage(image1);
-        comment.setUser(user);
-        comment.setCreateDate(new Date());
-
-        System.out.println("Comment is: " + comment.getText());
-
-        Comment comments = imageService.uploadComment(comment);
-
-
-
-        model.addAttribute("comments",comments);
-
-        Image image = imageService.getImageByTitle(imageId);
-        model.addAttribute("image", image);
-        model.addAttribute("tags", image.getTags());
-        return "images/image";
     }
 
 }

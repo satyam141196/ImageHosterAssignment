@@ -1,4 +1,4 @@
-/*
+
 package ImageHoster.controller;
 
 
@@ -66,4 +66,3 @@ public class CommentControllerTest {
     }
 }
 
-*/

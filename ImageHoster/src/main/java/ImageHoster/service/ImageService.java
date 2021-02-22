@@ -55,8 +55,5 @@ public class ImageService {
         Integer id = uploaderId.getUser().getId();
         return id;
     }
-    public Comment uploadComment(Comment comment){
-        return imageRepository.uploadComment(comment);
-    }
 
 }
