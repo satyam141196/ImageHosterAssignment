@@ -1,4 +1,5 @@
 package ImageHoster.controller;
+import java.util.regex.*;
 
 import ImageHoster.model.Comment;
 import ImageHoster.model.Image;
@@ -44,12 +45,40 @@ public class UserController {
     //This controller method is called when the request pattern is of type 'users/registration' and also the incoming request is of POST type
     //This method calls the business logic and after the user record is persisted in the database, directs to login page
     @RequestMapping(value = "users/registration", method = RequestMethod.POST)
-    public String registerUser(User user) {
+    public String registerUser(User user, Model model) {
+        String error = "Password must contain atleast 1 alphabet, 1 number & 1 special character";
+        String passwordEntered = user.getPassword();  // It stores the password entered by user
+        //The if block checks if the method (isValidPassword()) returns false then execute the error displaying message code
+        if(isValidPassword(passwordEntered) == false){
+            model.addAttribute("passwordTypeError" , error);
+            User user2 = new User();
+            UserProfile profile = new UserProfile();
+            user2.setProfile(profile);
+            model.addAttribute("User", user2);
 
-        System.out.println("Password is: " + user.getPassword());
+            return "users/registration";
+        }
 
         userService.registerUser(user);
         return "redirect:/users/login";
+    }
+
+    //Below method checks if the entered password is as per the requirement pattern of password field.
+    public boolean isValidPassword(String password){
+        // Below string displays the regular expression to be used.
+        String regex = "^(?=.*[a-zA-Z])(?=.*[!@#$%^&*()_+])(?=.*[0-9]).{1,50}$";
+
+        //Compile the Regex
+        Pattern p = Pattern.compile(regex);
+
+        //if password is empty, return false
+        if(password == null){
+            return false;
+        }
+        //matcher() method to find matching between password and regex
+        Matcher m = p.matcher(password);
+
+        return m.matches();
     }
 
     //This controller method is called when the request pattern is of type 'users/login'
